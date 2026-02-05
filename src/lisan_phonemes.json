@@ -1,0 +1,438 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "description": "Lisan al-Arab Digital Phonemes - Arabic letter physics for Tajweed validation",
+        "source": "Articulatory Phonetics + Classical Tajweed Rules"
+    },
+    "consonants": {
+        "ء": {
+            "type": "stop",
+            "place": "glottal",
+            "voiced": false,
+            "tafkheem": false
+        },
+        "ب": {
+            "type": "stop",
+            "place": "bilabial",
+            "voiced": true,
+            "tafkheem": false,
+            "qalqalah": true
+        },
+        "ت": {
+            "type": "stop",
+            "place": "dental",
+            "voiced": false,
+            "tafkheem": false
+        },
+        "ث": {
+            "type": "fricative",
+            "place": "dental",
+            "voiced": false,
+            "tafkheem": false,
+            "freq_range": [
+                4000,
+                8000
+            ]
+        },
+        "ج": {
+            "type": "affricate",
+            "place": "palatal",
+            "voiced": true,
+            "tafkheem": false,
+            "qalqalah": true
+        },
+        "ح": {
+            "type": "fricative",
+            "place": "pharyngeal",
+            "voiced": false,
+            "tafkheem": false
+        },
+        "خ": {
+            "type": "fricative",
+            "place": "velar",
+            "voiced": false,
+            "tafkheem": true,
+            "freq_range": [
+                1500,
+                3000
+            ]
+        },
+        "د": {
+            "type": "stop",
+            "place": "dental",
+            "voiced": true,
+            "tafkheem": false,
+            "qalqalah": true
+        },
+        "ذ": {
+            "type": "fricative",
+            "place": "dental",
+            "voiced": true,
+            "tafkheem": false
+        },
+        "ر": {
+            "type": "trill",
+            "place": "alveolar",
+            "voiced": true,
+            "tafkheem": "context"
+        },
+        "ز": {
+            "type": "fricative",
+            "place": "alveolar",
+            "voiced": true,
+            "tafkheem": false,
+            "freq_range": [
+                3500,
+                6000
+            ]
+        },
+        "س": {
+            "type": "fricative",
+            "place": "alveolar",
+            "voiced": false,
+            "tafkheem": false,
+            "freq_range": [
+                4000,
+                8000
+            ]
+        },
+        "ش": {
+            "type": "fricative",
+            "place": "palatal",
+            "voiced": false,
+            "tafkheem": false,
+            "freq_range": [
+                2500,
+                6000
+            ]
+        },
+        "ص": {
+            "type": "fricative",
+            "place": "alveolar",
+            "voiced": false,
+            "tafkheem": true,
+            "freq_range": [
+                3500,
+                7000
+            ]
+        },
+        "ض": {
+            "type": "stop",
+            "place": "dental",
+            "voiced": true,
+            "tafkheem": true
+        },
+        "ط": {
+            "type": "stop",
+            "place": "dental",
+            "voiced": false,
+            "tafkheem": true,
+            "qalqalah": true
+        },
+        "ظ": {
+            "type": "fricative",
+            "place": "dental",
+            "voiced": true,
+            "tafkheem": true
+        },
+        "ع": {
+            "type": "fricative",
+            "place": "pharyngeal",
+            "voiced": true,
+            "tafkheem": false
+        },
+        "غ": {
+            "type": "fricative",
+            "place": "velar",
+            "voiced": true,
+            "tafkheem": true
+        },
+        "ف": {
+            "type": "fricative",
+            "place": "labiodental",
+            "voiced": false,
+            "tafkheem": false,
+            "freq_range": [
+                3000,
+                6000
+            ]
+        },
+        "ق": {
+            "type": "stop",
+            "place": "uvular",
+            "voiced": false,
+            "tafkheem": true,
+            "qalqalah": true
+        },
+        "ك": {
+            "type": "stop",
+            "place": "velar",
+            "voiced": false,
+            "tafkheem": false
+        },
+        "ل": {
+            "type": "lateral",
+            "place": "alveolar",
+            "voiced": true,
+            "tafkheem": "allah_context"
+        },
+        "م": {
+            "type": "nasal",
+            "place": "bilabial",
+            "voiced": true,
+            "tafkheem": false,
+            "ghunnah_capable": true
+        },
+        "ن": {
+            "type": "nasal",
+            "place": "alveolar",
+            "voiced": true,
+            "tafkheem": false,
+            "ghunnah_capable": true
+        },
+        "ه": {
+            "type": "fricative",
+            "place": "glottal",
+            "voiced": false,
+            "tafkheem": false
+        },
+        "و": {
+            "type": "approximant",
+            "place": "bilabial",
+            "voiced": true,
+            "tafkheem": false
+        },
+        "ي": {
+            "type": "approximant",
+            "place": "palatal",
+            "voiced": true,
+            "tafkheem": false
+        }
+    },
+    "physics_signatures": {
+        "stop": {
+            "description": "Complete oral closure followed by burst release",
+            "detection": "silence_then_burst",
+            "metrics": [
+                "rms_dip",
+                "rms_spike",
+                "closure_duration_ms"
+            ]
+        },
+        "fricative": {
+            "description": "Continuous turbulent airflow through narrow constriction",
+            "detection": "high_frequency_noise",
+            "metrics": [
+                "spectral_centroid",
+                "zcr",
+                "noise_band_energy"
+            ]
+        },
+        "nasal": {
+            "description": "Airflow through nasal cavity with oral closure",
+            "detection": "nasal_formant",
+            "metrics": [
+                "f1_nasal_peak",
+                "antiformant_250hz",
+                "pitch_stability"
+            ]
+        },
+        "trill": {
+            "description": "Rapid vibration of articulator",
+            "detection": "periodic_amplitude_modulation",
+            "metrics": [
+                "modulation_rate_hz",
+                "periodicity"
+            ]
+        },
+        "approximant": {
+            "description": "Smooth airflow with minimal constriction",
+            "detection": "formant_transition",
+            "metrics": [
+                "f1_f2_trajectory",
+                "voicing_continuity"
+            ]
+        },
+        "lateral": {
+            "description": "Airflow around tongue sides",
+            "detection": "lateral_formant_pattern",
+            "metrics": [
+                "f2_f3_proximity"
+            ]
+        }
+    },
+    "tajweed_rules": {
+        "qalqalah": {
+            "letters": [
+                "ق",
+                "ط",
+                "ب",
+                "ج",
+                "د"
+            ],
+            "physics": "silence_then_burst",
+            "expected": {
+                "dip_threshold": 0.3,
+                "spike_threshold": 0.5
+            },
+            "duration_bonus_ms": 50
+        },
+        "madd_asli": {
+            "harakat": 2,
+            "expected_ms_range": [
+                120,
+                280
+            ],
+            "tolerance": 0.3
+        },
+        "madd_wajib": {
+            "harakat": 4,
+            "expected_ms_range": [
+                240,
+                500
+            ],
+            "tolerance": 0.25
+        },
+        "madd_lazim": {
+            "harakat": 6,
+            "expected_ms_range": [
+                400,
+                800
+            ],
+            "tolerance": 0.2
+        },
+        "ghunnah": {
+            "letters": [
+                "ن",
+                "م"
+            ],
+            "harakat": 2,
+            "expected_ms_range": [
+                80,
+                250
+            ],
+            "physics": "nasal_formant",
+            "pitch_stability_min": 0.7
+        },
+        "idgham_full": {
+            "description": "Complete merger, source letter disappears",
+            "trigger_letters": [
+                "ر",
+                "ل"
+            ],
+            "physics": "energy_continuity",
+            "expected": {
+                "boundary_sharpness": "low",
+                "transition_smoothness": "high"
+            }
+        },
+        "idgham_partial": {
+            "description": "Partial merger with ghunnah preserved",
+            "trigger_letters": [
+                "ي",
+                "ن",
+                "م",
+                "و"
+            ],
+            "physics": "nasal_formant_during_merge",
+            "expected": {
+                "ghunnah_present": true,
+                "transition_smoothness": "medium"
+            }
+        },
+        "ikhfa": {
+            "description": "Concealment with partial nasalization",
+            "trigger_letters": [
+                "ت",
+                "ث",
+                "ج",
+                "د",
+                "ذ",
+                "ز",
+                "س",
+                "ش",
+                "ص",
+                "ض",
+                "ط",
+                "ظ",
+                "ف",
+                "ق",
+                "ك"
+            ],
+            "physics": "gradual_nasalization",
+            "expected": {
+                "nasalization_gradient": true,
+                "transition_ms": [
+                    50,
+                    150
+                ]
+            }
+        },
+        "iqlab": {
+            "description": "Nun becomes Mim before Ba",
+            "trigger": "ن_before_ب",
+            "physics": "bilabial_nasal",
+            "expected": {
+                "lip_closure": true,
+                "nasal_formant": true
+            }
+        },
+        "izhar": {
+            "description": "Clear pronunciation without modification",
+            "trigger_letters": [
+                "ء",
+                "ه",
+                "ع",
+                "ح",
+                "غ",
+                "خ"
+            ],
+            "physics": "clean_boundary",
+            "expected": {
+                "boundary_sharpness": "high",
+                "nasalization": false
+            }
+        },
+        "tafkheem": {
+            "letters": [
+                "خ",
+                "ص",
+                "ض",
+                "غ",
+                "ط",
+                "ق",
+                "ظ"
+            ],
+            "physics": "f2_depression",
+            "expected": {
+                "f2_max_hz": 1200
+            }
+        },
+        "tarqeeq": {
+            "description": "Light pronunciation (opposite of tafkheem)",
+            "physics": "f2_elevation",
+            "expected": {
+                "f2_min_hz": 1400
+            }
+        },
+        "sakt": {
+            "description": "Brief pause without breath",
+            "physics": "silence_detection",
+            "expected": {
+                "duration_ms_range": [
+                    50,
+                    200
+                ],
+                "rms_threshold": 0.05
+            }
+        }
+    },
+    "reciter_calibration": {
+        "description": "Per-reciter parameters calibrated from sample",
+        "parameters": {
+            "harakat_base_ms": "Calibrate from short vowels",
+            "speech_rate": "Words per minute",
+            "pitch_range_hz": "Min/max F0"
+        }
+    }
+}
