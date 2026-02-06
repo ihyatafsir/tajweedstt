@@ -91,6 +91,10 @@ class PhysicsValidator:
     GHUNNAH_MIN_DURATION_MS = 80.0
     TAFKHEEM_F2_MAX_HZ = 1200.0  # Heavy letters have depressed F2
     
+    # Precision thresholds
+    MIN_SEGMENT_MS = 50.0  # Minimum segment duration for valid analysis
+    MIN_SEGMENT_SAMPLES = 1102  # ~50ms at 22050 Hz
+    
     def __init__(self, sample_rate: int = 22050):
         self.sample_rate = sample_rate
         self._audio_cache = {}
@@ -107,6 +111,51 @@ class PhysicsValidator:
                 self._audio_cache[audio_path] = np.random.randn(self.sample_rate * 10) * 0.1
         
         return self._audio_cache[audio_path]
+    
+    def safe_extract_segment(self, audio: np.ndarray, start: float, end: float) -> tuple:
+        """
+        PRECISION: Safely extract audio segment with bounds and validity checking.
+        
+        Returns:
+            tuple: (segment, is_valid, error_reason)
+        """
+        # Bounds checking
+        start_sample = max(0, int(start * self.sample_rate))
+        end_sample = min(len(audio), int(end * self.sample_rate))
+        
+        # Sanity check
+        if start_sample >= end_sample:
+            return None, False, "invalid_range"
+        
+        segment = audio[start_sample:end_sample]
+        
+        # Length check
+        if len(segment) < self.MIN_SEGMENT_SAMPLES:
+            return segment, False, f"too_short_{len(segment)}_samples"
+        
+        # NaN/Inf check
+        if np.any(np.isnan(segment)) or np.any(np.isinf(segment)):
+            segment = np.nan_to_num(segment, nan=0.0, posinf=0.0, neginf=0.0)
+        
+        return segment, True, None
+    
+    def safe_rms(self, segment: np.ndarray, frame_length: int = 256, hop_length: int = 64) -> np.ndarray:
+        """
+        PRECISION: Calculate RMS with NaN protection.
+        """
+        if not HAS_LIBROSA:
+            return np.array([0.0])
+        
+        rms = librosa.feature.rms(y=segment, frame_length=frame_length, hop_length=hop_length)[0]
+        
+        # Protect against NaN/Inf
+        rms = np.nan_to_num(rms, nan=0.0, posinf=1.0, neginf=0.0)
+        
+        # Normalize to prevent division issues
+        if np.max(rms) > 0:
+            rms = rms / np.max(rms)
+        
+        return rms
     
     def validate_qalqalah(self, 
                           audio: np.ndarray,
@@ -128,19 +177,21 @@ class PhysicsValidator:
                 rms_profile="unknown"
             )
         
-        # Extract segment
-        start_sample = int(start * self.sample_rate)
-        end_sample = int(end * self.sample_rate)
+        # Extract segment with bounds checking
+        start_sample = max(0, int(start * self.sample_rate))
+        end_sample = min(len(audio), int(end * self.sample_rate))
         segment = audio[start_sample:end_sample]
         
-        if len(segment) < 100:
+        # PRECISION: Skip segments that are too short for reliable analysis
+        if len(segment) < self.MIN_SEGMENT_SAMPLES:
             return QalqalahResult(
-                status=ValidationStatus.FAIL,
+                status=ValidationStatus.SKIPPED,
                 metric_name="RMS Energy",
                 expected_pattern="dip_then_spike",
-                observed_pattern="segment_too_short",
+                observed_pattern="insufficient_frames",
                 score=0.0,
-                rms_profile="unknown"
+                rms_profile="unknown",
+                details={"reason": f"Segment {len(segment)} samples < {self.MIN_SEGMENT_SAMPLES} minimum"}
             )
         
         # Calculate RMS in frames
