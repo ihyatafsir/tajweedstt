@@ -21,7 +21,7 @@ from ctc_forced_aligner import (
 SURAH = 90
 PROJECT_ROOT = Path("/home/absolut7/Documents/26apps/MahQuranApp")
 VERSES_PATH = PROJECT_ROOT / "public/data/verses_v4.json"
-OUTPUT_DIR = PROJECT_ROOT / "public/data"
+OUTPUT_DIR = PROJECT_ROOT / "public/data/abdul_basit"
 AUDIO_PATH = PROJECT_ROOT / "public/audio/abdul_basit/surah_090.mp3"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 4

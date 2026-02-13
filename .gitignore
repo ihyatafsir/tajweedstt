@@ -16,8 +16,8 @@ ENV/
 
 # Output
 output/
-*.json
-!src/*.json
+*.mp4
+*.wav
 
 # OS
 .DS_Store
