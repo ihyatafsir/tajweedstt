@@ -25,7 +25,7 @@ VIDEO_PATH = Path("/home/absolut7/Downloads/twitter_video.mp4")
 AUDIO_PATH = Path("/home/absolut7/Downloads/twitter_audio.wav")
 TIMING_PATH = Path("/home/absolut7/Downloads/video_letter_timing.json")
 UTHMANI_PATH = Path("/home/absolut7/Downloads/uthmani_9_50_55.json")
-OUTPUT_PATH = Path("/home/absolut7/Downloads/quran_karaoke.mp4")
+OUTPUT_PATH = Path("/home/absolut7/Downloads/quran_tilawah_overlay.mp4")
 FRAMES_DIR = Path("/tmp/quran_frames_v7")
 
 WIDTH = 1024

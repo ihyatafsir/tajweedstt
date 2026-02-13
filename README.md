@@ -1,16 +1,16 @@
-# TajweedSST — Quranic Letter-Level Alignment & Karaoke Video Renderer
+# TajweedSST — Quranic Letter-Level Alignment & Tilawah Video Renderer
 
-> CTC Forced Alignment + Acoustic Physics Validation + Karaoke-Style Video Overlay for Quranic Recitation
+> CTC Forced Alignment + Acoustic Physics Validation + Synchronized Recitation Overlay for Quranic Tilawah
 
 ## Overview
 
-TajweedSST is a complete pipeline for producing **letter-level timing data** for Quranic recitation audio and rendering **karaoke-style overlay videos** with real-time per-letter highlighting synchronized to the reciter's voice.
+TajweedSST is a complete pipeline for producing **letter-level timing data** for Quranic recitation audio and rendering **synchronized recitation overlay videos** with real-time per-letter highlighting matched to the reciter's voice.
 
 ### What It Does
 
 1. **Aligns** — Uses wav2vec2 CTC forced alignment to produce per-letter timestamps from recitation audio
 2. **Validates** — Applies Tajweed physics rules (Qalqalah, Ghunnah, Madd, Tafkheem) against acoustic data
-3. **Renders** — Generates karaoke-style video with per-grapheme color animation, waveform visualization, and ayah-by-ayah display
+3. **Renders** — Generates tilawah overlay video with per-grapheme color animation, waveform visualization, and ayah-by-ayah display
 
 ### Output Example
 
@@ -24,7 +24,7 @@ The renderer produces an MP4 with:
 
 ---
 
-## Quick Start: Generate a Quran Karaoke Video
+## Quick Start: Generate a Quran Tilawah Overlay Video
 
 ### Prerequisites
 
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 #### Step 1: Prepare Your Source Material
 
 You need three things:
-1. **A video file** (background for the karaoke overlay, e.g. a nature scene or Islamic calligraphy)
+1. **A video file** (background for the overlay, e.g. a nature scene or Islamic calligraphy)
 2. **Audio of the recitation** (WAV format, can be extracted from a video)
 3. **The Quran text** being recited (surah number + ayah range)
 
@@ -105,7 +105,7 @@ For beautiful Uthmani-script display, create a JSON mapping of ayah numbers to t
 
 > **Note:** The renderer automatically strips Quranic stop marks (ۖ, ۭ, ۚ, etc.) from the timing data to avoid rendering non-letter symbols.
 
-#### Step 4: Render the Karaoke Video
+#### Step 4: Render the Tilawah Overlay Video
 
 Edit `render_quran_video.py` to set your paths:
 
@@ -115,7 +115,7 @@ VIDEO_PATH = Path("/path/to/background_video.mp4")
 AUDIO_PATH = Path("/path/to/audio.wav")
 TIMING_PATH = Path("/path/to/letter_timing.json")
 UTHMANI_PATH = Path("/path/to/uthmani_text.json")  # Optional
-OUTPUT_PATH = Path("/path/to/output_karaoke.mp4")
+OUTPUT_PATH = Path("/path/to/output_tilawah.mp4")
 
 WIDTH = 1024        # Video width
 HEIGHT = 576        # Video height
@@ -191,7 +191,7 @@ def split_into_graphemes(text):
 | `لَ` | ل + ـَ | 2 |
 | `آ` | ا + ـٓ | 2 |
 
-### Karaoke Video Renderer (v7 — RAQM Native Shaping)
+### Tilawah Video Renderer (v7 — RAQM Native Shaping)
 
 The renderer uses **Pillow with RAQM/HarfBuzz** for proper Arabic text shaping:
 
@@ -244,7 +244,7 @@ font = ImageFont.truetype(font_path, 56, layout_engine=ImageFont.Layout.RAQM)
 │ 4. (Optional) Prepare Uthmani text JSON                 │
 ├─────────────────────────────────────────────────────────┤
 │ 5. Run video renderer (render_quran_video.py)           │
-│    → Produces karaoke MP4                               │
+│    → Produces tilawah overlay MP4                       │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -288,7 +288,7 @@ This uses the same CTC + physics pipeline but outputs timing files in the format
 
 ```
 tajweedsst/
-├── render_quran_video.py      # 🎬 Karaoke video renderer (v7, RAQM)
+├── render_quran_video.py      # 🎬 Tilawah overlay renderer (v7, RAQM)
 ├── align_video.py             # 🎯 CTC alignment for video audio
 ├── batch_align_all.py         # 📦 Batch all 114 surahs
 ├── ctc_align_90.py            # Surah 90 alignment (reference)
